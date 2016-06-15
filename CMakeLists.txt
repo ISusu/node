@@ -52,6 +52,7 @@ set(node_Thread_SRC
   node/thread/thread_${SRC_PLAT}.h
   node/thread/tss.h
   node/thread/tss_${SRC_PLAT}.h
+  node/thread/lock_guard.h
   
   src/thread/event.cpp
   src/thread/event_${SRC_PLAT}.cpp
