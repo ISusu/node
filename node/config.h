@@ -24,13 +24,13 @@
 # pragma once
 #endif
 
-#ifndef PLATFORM_WINDOWS
-#define PLATFORM_WINDOWS
-#endif // PLATFORM_WINDOWS
+#ifndef PLATFORM_LINUX
+#define PLATFORM_LINUX
+#endif // PLATFORM_LINUX
 
-#ifndef ARCH_X86
-#define ARCH_X86
-#endif // ARCH_X86
+#ifndef ARCH_X64
+#define ARCH_X64
+#endif // ARCH_X64
 
 #ifndef ENDIAN_LITTLE
 #define ENDIAN_LITTLE

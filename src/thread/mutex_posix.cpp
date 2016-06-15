@@ -17,6 +17,12 @@
  *
  *****************************************************************************/
 
+#include "node/thread/mutex_posix.h"
 
-
-
+namespace node
+{
+	mutex_impl::mutex_impl(void)
+	{
+		assert(::pthread_mutex_init(&mutex_, 0) == 0);
+	}
+}

@@ -24,6 +24,35 @@
 # pragma once
 #endif
 
+#include <assert.h>
+#include <pthread.h>
+#include <node/noncopyable.h>
 
+namespace node
+{
+	class mutex_impl : private noncopyable
+	{
+	public:
+		mutex_impl(void);
+		~mutex_impl(void) {
+			::pthread_mutex_destroy(&mutex_);
+		}
+
+		void lock_impl(void) {
+			assert(::pthread_mutex_lock(&mutex_) == 0);
+		}
+
+		void unlock_impl(void) {
+			assert(::pthread_mutex_unlock(&mutex_) == 0);
+		}
+
+		bool try_lock_impl(void) {
+			return (::pthread_mutex_trylock(&mutex_) == 0);
+		}
+
+	private:
+		pthread_mutex_t mutex_;
+	};
+}
 
 #endif /* NODE_THREAD_MUTEX_POSIX_H_ */

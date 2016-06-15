@@ -24,8 +24,26 @@
 # pragma once
 #endif
 
+#include <node/noncopyable.h>
 
+struct internal_event_t;
 
+namespace node
+{
+	class event_impl : private noncopyable
+	{
+	public:
+		event_impl(bool auto_reset, bool init_state);
+		~event_impl(void);
 
+		void set_impl(void);
+		void reset_impl(void);
+		void wait_impl(void);
+		void wait_impl(long);
+
+	private:
+		struct internal_event_t* event_;
+	};
+}
 
 #endif // NODE_THREAD_EVENT_POSIX_H_

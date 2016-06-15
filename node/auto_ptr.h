@@ -34,7 +34,7 @@ namespace node
     public:
         auto_ptr(T* ptr = 0) : ptr_(ptr) {}
         auto_ptr(const auto_ptr& ptr) : ptr_(ptr.release()) {}
-        ~auto_ptr(void) { SAFE_DEL(ptr) }
+        ~auto_ptr(void) { SAFE_DEL(ptr_) }
 
         void operator=(const auto_ptr& ptr)
         {
