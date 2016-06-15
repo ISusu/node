@@ -24,8 +24,39 @@
 # pragma once
 #endif
 
+#include <node/noncopyable.h>
+#include <node/platform.h>
+#if defined(PLATFORM_WINDOWS)
+#include <node/thread/mutex_win32.h>
+#elif defined(PLATFORM_LINUX)
+#include <node/thread/mutex_posix.h>
+#else
+#error "node threads unavailable on this platform"
+#endif // defined(PLATFORM_WINDOWS)
 
+namespace node
+{
+    class empty_mutex : private noncopyable
+    {
+    public:
+        empty_mutex(void) {}
+        ~empty_mutex(void) {}
 
+        void lock(void) {}
+        void unlock(void) {}
+        bool try_lock(void) { return true; }
+    };
 
+    class mutex : private mutex_impl
+    {
+    public:
+        mutex(void) {}
+        ~mutex(void) {}
+
+        void lock(void) { lock_impl(); }
+        void unlock(void) { unlock_impl(); }
+        bool try_lock(void) { return try_lock_impl(); }
+    };
+}
 
 #endif // NODE_THREAD_MUTEX_H_

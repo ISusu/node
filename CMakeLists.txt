@@ -41,17 +41,24 @@ set(node_Base_SRC
     node/config.h
 )
 set(node_Thread_SRC
-    node/thread/mutex.h
-    node/thread/mutex_${SRC_PLAT}.h
-    node/thread/thread.h
-    node/thread/thread_${SRC_PLAT}.h
-    node/thread/tss.h
-    node/thread/tss_${SRC_PLAT}.h
-    
-    src/thread/mutex.cpp
-    src/thread/mutex_${SRC_PLAT}.cpp
-    src/thread/thread_${SRC_PLAT}.cpp
-    src/thread/tss_${SRC_PLAT}.cpp
+  node/thread/runnable.h
+  node/thread/event.h
+  node/thread/event_${SRC_PLAT}.h
+  node/thread/mutex.h
+  node/thread/mutex_${SRC_PLAT}.h
+  node/thread/thread.h
+  node/thread/thread_${SRC_PLAT}.h
+  node/thread/tss.h
+  node/thread/tss_${SRC_PLAT}.h
+  
+  src/thread/event.cpp
+  src/thread/event_${SRC_PLAT}.cpp
+  src/thread/mutex.cpp
+  src/thread/mutex_${SRC_PLAT}.cpp
+  src/thread/thread.cpp
+  src/thread/thread_${SRC_PLAT}.cpp
+  src/thread/tss.cpp
+  src/thread/tss_${SRC_PLAT}.cpp
 )
 
 if (WIN32)

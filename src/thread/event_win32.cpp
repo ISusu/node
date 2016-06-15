@@ -17,23 +17,20 @@
  *
  *****************************************************************************/
 
-#ifndef NODECPP_FOUNDATION_CONFIG_H_
-#define NODECPP_FOUNDATION_CONFIG_H_
+#include "node/thread/event_win32.h"
+#include <assert.h>
 
-#if defined(_MSC_VER) && (_MSC_VER >= 1200)
-# pragma once
-#endif
+namespace node
+{
+    event_impl::event_impl(bool auto_reset, bool init_state)
+        : event_(::CreateEventA(NULL, auto_reset ? FALSE : TRUE, 
+        init_state ? TRUE : FALSE, NULL))
+    {
+        assert(event_ != NULL);
+    }
 
-#ifndef PLATFORM_WINDOWS
-#define PLATFORM_WINDOWS
-#endif // PLATFORM_WINDOWS
-
-#ifndef ARCH_X86
-#define ARCH_X86
-#endif // ARCH_X86
-
-#ifndef ENDIAN_LITTLE
-#define ENDIAN_LITTLE
-#endif // ENDIAN_LITTLE
-
-#endif // NODECPP_FOUNDATION_CONFIG_H_
+    event_impl::~event_impl(void)
+    {
+        ::CloseHandle(event_);
+    }
+}

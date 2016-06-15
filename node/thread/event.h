@@ -17,23 +17,36 @@
  *
  *****************************************************************************/
 
-#ifndef NODECPP_FOUNDATION_CONFIG_H_
-#define NODECPP_FOUNDATION_CONFIG_H_
+#ifndef NODE_THREAD_EVENT_H_
+#define NODE_THREAD_EVENT_H_
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
 #endif
 
-#ifndef PLATFORM_WINDOWS
-#define PLATFORM_WINDOWS
-#endif // PLATFORM_WINDOWS
+#include <node/platform.h>
+#if defined(PLATFORM_WINDOWS)
+#include <node/thread/event_win32.h>
+#elif defined(PLATFORM_LINUX)
+#include <node/thread/event_posix.h>
+#else
+#error "node threads unavailable on this platform"
+#endif // defined(PLATFORM_WINDOWS)
 
-#ifndef ARCH_X86
-#define ARCH_X86
-#endif // ARCH_X86
+namespace node
+{
+    class event : private event_impl
+    {
+    public:
+        event(bool auto_reset = true, bool init_state = false)
+            : event_impl(auto_reset, init_state) {}
+        ~event(void) {}
 
-#ifndef ENDIAN_LITTLE
-#define ENDIAN_LITTLE
-#endif // ENDIAN_LITTLE
+        void set(void) { set_impl(); }
+        void reset(void) { reset_impl(); }
+        void wait(void) { wait_impl(); }
+        void wait(long milliseconds) { wait_impl(milliseconds); }
+    };
+}
 
-#endif // NODECPP_FOUNDATION_CONFIG_H_
+#endif // NODE_THREAD_EVENT_H_

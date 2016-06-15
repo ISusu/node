@@ -17,6 +17,18 @@
  *
  *****************************************************************************/
 
+#include "node/thread/mutex_win32.h"
 
+namespace node
+{
+    mutex_impl::mutex_impl(void)
+        : cs_()
+    {
+        InitializeCriticalSectionAndSpinCount(&cs_, 4000);
+    }
 
-
+    mutex_impl::~mutex_impl(void)
+    {
+        DeleteCriticalSection(&cs_);
+    }
+}

@@ -24,8 +24,26 @@
 # pragma once
 #endif
 
+#include <assert.h>
+#define WIN32_LEAN_AND_MEAN
+#include <Windows.h>
+#include <node/noncopyable.h>
 
+namespace node
+{
+    class mutex_impl : private noncopyable
+    {
+    public:
+        mutex_impl(void);
+        ~mutex_impl(void);
 
+        void lock_impl(void) { EnterCriticalSection(&cs_); }
+        void unlock_impl(void) { LeaveCriticalSection(&cs_); }
+        bool try_lock_impl(void) { return (TryEnterCriticalSection(&cs_) == TRUE); }
 
+    private:
+        CRITICAL_SECTION cs_;
+    };
+}
 
 #endif // NODE_THREAD_MUTEX_WIN32_H_

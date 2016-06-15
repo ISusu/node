@@ -17,23 +17,25 @@
  *
  *****************************************************************************/
 
-#ifndef NODECPP_FOUNDATION_CONFIG_H_
-#define NODECPP_FOUNDATION_CONFIG_H_
+#ifndef NODE_THREAD_RUNNABLE_H_
+#define NODE_THREAD_RUNNABLE_H_
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
 #endif
 
-#ifndef PLATFORM_WINDOWS
-#define PLATFORM_WINDOWS
-#endif // PLATFORM_WINDOWS
+#include <node/noncopyable.h>
 
-#ifndef ARCH_X86
-#define ARCH_X86
-#endif // ARCH_X86
+namespace node
+{
+    class runnable : private noncopyable
+    {
+    public:
+        runnable(void){}
+        ~runnable(void){}
 
-#ifndef ENDIAN_LITTLE
-#define ENDIAN_LITTLE
-#endif // ENDIAN_LITTLE
+        virtual void run(void) = 0;
+    };
+}
 
-#endif // NODECPP_FOUNDATION_CONFIG_H_
+#endif // NODE_THREAD_RUNNABLE_H_

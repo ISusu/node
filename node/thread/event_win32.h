@@ -17,23 +17,36 @@
  *
  *****************************************************************************/
 
-#ifndef NODECPP_FOUNDATION_CONFIG_H_
-#define NODECPP_FOUNDATION_CONFIG_H_
+#ifndef NODE_THREAD_EVENT_WIN32_H_
+#define NODE_THREAD_EVENT_WIN32_H_
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
 #endif
 
-#ifndef PLATFORM_WINDOWS
-#define PLATFORM_WINDOWS
-#endif // PLATFORM_WINDOWS
+#include <assert.h>
+#define WIN32_LEAN_AND_MEAN
+#include <Windows.h>
+#include <node/noncopyable.h>
 
-#ifndef ARCH_X86
-#define ARCH_X86
-#endif // ARCH_X86
+namespace node
+{
+    class event_impl : private noncopyable
+    {
+    public:
+        event_impl(bool auto_reset, bool init_state);
+        ~event_impl(void);
 
-#ifndef ENDIAN_LITTLE
-#define ENDIAN_LITTLE
-#endif // ENDIAN_LITTLE
+        void set_impl(void) { assert(::SetEvent(event_)); }
+        void reset_impl(void) { assert(::ResetEvent(event_)); }
+        void wait_impl(void) 
+        { assert(::WaitForSingleObject(event_, INFINITE) != WAIT_FAILED); }
+        void wait_impl(long milliseconds) 
+        { assert(::WaitForSingleObject(event_, milliseconds) != WAIT_FAILED); }
 
-#endif // NODECPP_FOUNDATION_CONFIG_H_
+    private:
+        HANDLE event_;
+    };
+}
+
+#endif // NODE_THREAD_EVENT_WIN32_H_

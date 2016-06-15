@@ -38,8 +38,8 @@ namespace node
         return ::TlsGetValue(tls_index_);
     }
 
-    void tss_impl::set_impl(void* value)
+    void tss_impl::set_impl(const void* value)
     {
-        assert(::TlsSetValue(tls_index_, value));
+        assert(::TlsSetValue(tls_index_, const_cast<void*>(value)));
     }
 }
