@@ -39,6 +39,8 @@ set(node_Base_SRC
     node/noncopyable.h
     node/platform.h
     node/config.h
+    node/macros.h
+    node/auto_ptr.h
 )
 set(node_Thread_SRC
   node/thread/runnable.h
