@@ -17,30 +17,29 @@
  *
  *****************************************************************************/
 
-#ifndef NODE_THREAD_TSS_WIN32_H_
-#define NODE_THREAD_TSS_WIN32_H_
-
-#if defined(_MSC_VER) && (_MSC_VER >= 1200)
-# pragma once
-#endif
-
-#define WIN32_LEAN_AND_MEAN
-#include <Windows.h>
+#include "node/thread/tss_posix.h"
+#include <assert.h>
 
 namespace node
 {
-    class tss_impl
+    tss_impl::tss_impl(void)
+        : tls_key_()
     {
-    public:
-        tss_impl(void);
-        ~tss_impl(void);
+        assert(::pthread_key_create(&tls_key_, NULL) == 0);
+    }
 
-        void* get_impl(void) const;
-        void set_impl(const void*);
+    tss_impl::~tss_impl(void)
+    {
+        assert(::pthread_key_delete(tls_key_) == 0);
+    }
 
-    private:
-        DWORD tls_index_;
-    };
+    void* tss_impl::get_impl(void) const
+    {
+        return ::pthread_getspecific(tls_key_);
+    }
+
+    void tss_impl::set_impl(const void* value)
+    {
+        assert(::pthread_setspecific(tls_key_, value));
+    }
 }
-
-#endif // NODE_THREAD_TSS_WIN32_H_

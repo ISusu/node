@@ -17,15 +17,14 @@
  *
  *****************************************************************************/
 
-#ifndef NODE_THREAD_TSS_WIN32_H_
-#define NODE_THREAD_TSS_WIN32_H_
+#ifndef NODE_THREAD_TSS_POSIX_H_
+#define NODE_THREAD_TSS_POSIX_H_
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
 #endif
 
-#define WIN32_LEAN_AND_MEAN
-#include <Windows.h>
+#include <pthread.h>
 
 namespace node
 {
@@ -39,8 +38,8 @@ namespace node
         void set_impl(const void*);
 
     private:
-        DWORD tls_index_;
+        pthread_key_t tls_key_;
     };
 }
 
-#endif // NODE_THREAD_TSS_WIN32_H_
+#endif /* NODE_THREAD_TSS_POSIX_H_ */

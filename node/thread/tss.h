@@ -28,8 +28,10 @@
 #include <node/platform.h>
 #if defined(PLATFORM_WINDOWS)
 #include <node/thread/tss_win32.h>
+#elif defined(PLATFORM_LINUX)
+#include <node/thread/tss_posix.h>
 #else
-#error "platform not support"
+#error "node threads unavailable on this platform"
 #endif // defined(PLATFORM_WINDOWS)
 
 namespace node
@@ -41,7 +43,7 @@ namespace node
         ~tss(void) {}
 
         void* get(void) const { return get_impl(); }
-        void set(void* value) { set_impl(value); }
+        void set(const void* value) { set_impl(value); }
     };
 
     template<typename T>

@@ -17,30 +17,13 @@
  *
  *****************************************************************************/
 
-#ifndef NODE_THREAD_TSS_WIN32_H_
-#define NODE_THREAD_TSS_WIN32_H_
+#ifndef NODE_THREAD_MUTEX_POSIX_H_
+#define NODE_THREAD_MUTEX_POSIX_H_
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
 #endif
 
-#define WIN32_LEAN_AND_MEAN
-#include <Windows.h>
 
-namespace node
-{
-    class tss_impl
-    {
-    public:
-        tss_impl(void);
-        ~tss_impl(void);
 
-        void* get_impl(void) const;
-        void set_impl(const void*);
-
-    private:
-        DWORD tls_index_;
-    };
-}
-
-#endif // NODE_THREAD_TSS_WIN32_H_
+#endif /* NODE_THREAD_MUTEX_POSIX_H_ */
