@@ -5,3 +5,8 @@ find_package(OpenSSL QUIET)
 if(OPENSSL_FOUND)
   include_directories("${OPENSSL_INCLUDE_DIR}")
 endif()
+
+find_package(Libevent QUIET)
+if(Libevent_FOUND)
+  include_directories("${Libevent_INCLUDE_DIR}")
+endif()
