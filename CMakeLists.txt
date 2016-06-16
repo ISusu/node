@@ -43,6 +43,7 @@ set(node_Base_SRC
     node/auto_ptr.h
     node/scoped_ptr.h
     node/scoped_array.h
+    node/byte_converter.h
 )
 set(node_Thread_SRC
   node/thread/runnable.h
