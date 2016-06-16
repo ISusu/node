@@ -40,7 +40,7 @@ namespace node
         byte_buffer_exception(bool, std::size_t, 
             std::size_t, std::size_t);
         byte_buffer_exception(const byte_buffer_exception&);
-        ~byte_buffer_exception(void);
+        ~byte_buffer_exception(void) throw();
 
         const char* what(void) const throw();
 

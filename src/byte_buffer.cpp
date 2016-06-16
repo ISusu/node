@@ -36,7 +36,7 @@ namespace node
         memcpy(&message_[0], &excep.message_[0], EXCEP_BUFF_SIZE);
     }
 
-    byte_buffer_exception::~byte_buffer_exception(void)
+    byte_buffer_exception::~byte_buffer_exception(void) throw()
     {
 
     }

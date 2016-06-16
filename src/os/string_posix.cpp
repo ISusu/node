@@ -17,6 +17,19 @@
  *
  *****************************************************************************/
 
+#include "node/os/string.h"
+#include <cstdio>
+#include <cstring>
 
+namespace node
+{
+    int vsnprintf(char* dest, std::size_t size, const char* format, std::va_list args)
+    {
+    	return ::vsnprintf(dest, size, format, args);
+    }
 
-
+    int vfprintf(FILE* file, const char* format, std::va_list args)
+    {
+    	return ::vfprintf(file, format, args);
+    }
+}
