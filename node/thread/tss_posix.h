@@ -25,10 +25,11 @@
 #endif
 
 #include <pthread.h>
+#include <node/noncopyable.h>
 
 namespace node
 {
-    class tss_impl
+    class tss_impl : private noncopyable
     {
     public:
         tss_impl(void);
