@@ -52,7 +52,7 @@ namespace node
         int get_num_bytes(void) const;
         struct bignum_st* bn(void) const;
         std::uint32_t as_uint32(void) const;
-        std::uint8_t* as_byte_array(int);
+        std::uint8_t* as_byte_array(int = 0);
         const char* as_hex_str(void) const;
         const char* as_dec_str(void) const;
         static void free_str(void*);

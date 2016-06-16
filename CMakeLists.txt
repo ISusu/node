@@ -69,9 +69,11 @@ if(OPENSSL_FOUND)
   set(node_Crypto_SRC
     node/crypto/bignumber.h
     node/crypto/sha1.h
+    node/crypto/hmac.h
     
     src/crypto/bignumber.cpp
     src/crypto/sha1.cpp
+    src/crypto/hmac.cpp
   )
 endif(OPENSSL_FOUND)
 

@@ -17,63 +17,56 @@
  *
  *****************************************************************************/
 
-#include "node/crypto/sha1.h"
-#include <cstdarg>
+#include "node/crypto/hmac.h"
+#include <cassert>
+#include <cstring>
 #include "node/crypto/bignumber.h"
 
 namespace node
 {
-    sha1_hash::sha1_hash(void)
+    hmac_hash::hmac_hash(void)
     {
-        SHA1_Init(&sha_ctx_);
+        std::uint8_t temp[SEED_KEY_SIZE] = { 0x38, 0xA7, 0x83, 0x15, 0xF8, 0x92,
+            0x25, 0x30, 0x71, 0x98, 0x67, 0xB1, 0x8C, 0x4, 0xE2, 0xAA };
+        memcpy(&key_, &temp, SEED_KEY_SIZE);
+        HMAC_CTX_init(&hmac_ctx_);
+        HMAC_Init_ex(&hmac_ctx_, &key_, SEED_KEY_SIZE, EVP_sha1(), NULL);
     }
 
-    sha1_hash::~sha1_hash(void)
+    hmac_hash::~hmac_hash(void)
     {
-        SHA1_Init(&sha_ctx_);
+        memset(&key_, 0x00, SEED_KEY_SIZE);
+        HMAC_CTX_cleanup(&hmac_ctx_);
     }
 
-    void sha1_hash::initialize(void)
+    void hmac_hash::initialize(void)
     {
-        SHA1_Init(&sha_ctx_);
+        HMAC_Init_ex(&hmac_ctx_, &key_, SEED_KEY_SIZE, EVP_sha1(), NULL);
     }
 
-    void sha1_hash::finalize(void)
+    void hmac_hash::finalize(void)
     {
-        SHA1_Final(digest_, &sha_ctx_);
+        std::uint32_t size = 0;
+        HMAC_Final(&hmac_ctx_, digest_, &size);
+        assert(size == SHA_DIGEST_LENGTH);
     }
 
-    void sha1_hash::update_bignumbers(bignumber* bn, ...)
+    void hmac_hash::update_bignumber(bignumber* bn)
     {
-        std::va_list arg;
-        bignumber* xbn;
-
-        va_start(arg, bn);
-        xbn = bn;
-        while (xbn)
-        {
-            update_data(xbn->as_byte_array(), xbn->get_num_bytes());
-            xbn = va_arg(arg, bignumber*);
-        }
-        va_end(arg);
+        update_data(bn->as_byte_array(), bn->get_num_bytes());
     }
 
-    void sha1_hash::update_data(const std::uint8_t* str, std::size_t length)
+    void hmac_hash::update_data(const std::uint8_t* str, std::size_t length)
     {
-        SHA1_Update(&sha_ctx_, (const void*)str, length);
+        HMAC_Update(&hmac_ctx_, str, length);
     }
 
-    void sha1_hash::update_data(const std::string& str)
-    {
-        SHA1_Update(&sha_ctx_, (const void*)str.c_str(), str.length());
-    }
-
-    const std::uint8_t* sha1_hash::digest(void) const
+    const std::uint8_t* hmac_hash::digest(void) const
     {
         return &digest_[0];
     }
 
-    std::size_t sha1_hash::length(void) const
+    std::size_t hmac_hash::length(void) const
     {
         return SHA_DIGEST_LENGTH;
     }

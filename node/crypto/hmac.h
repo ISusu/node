@@ -17,8 +17,8 @@
  *
  *****************************************************************************/
 
-#ifndef NODE_CRYPTO_SHA1_H_
-#define NODE_CRYPTO_SHA1_H_
+#ifndef NODE_CRYPTO_HMAC_H_
+#define NODE_CRYPTO_HMAC_H_
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -26,35 +26,36 @@
 
 #include <cstddef>
 #include <cstdint>
-#include <string>
+#include <openssl/hmac.h>
 #include <openssl/sha.h>
-#include <openssl/crypto.h>
 #include <node/noncopyable.h>
 
 namespace node
 {
     class bignumber;
 
-    class sha1_hash : private noncopyable
+    class hmac_hash : private noncopyable
     {
     public:
-        sha1_hash(void);
-        ~sha1_hash(void);
+        const static int SEED_KEY_SIZE = 16;
+
+        hmac_hash(void);
+        ~hmac_hash(void);
 
         void initialize(void);
         void finalize(void);
 
-        void update_bignumbers(bignumber*, ...);
+        void update_bignumber(bignumber*);
         void update_data(const std::uint8_t*, std::size_t);
-        void update_data(const std::string&);
-
+        
         const std::uint8_t* digest(void) const;
         std::size_t length(void) const;
 
     private:
-        SHA_CTX sha_ctx_;
+        HMAC_CTX hmac_ctx_;
+        std::uint8_t key_[SEED_KEY_SIZE];
         std::uint8_t digest_[SHA_DIGEST_LENGTH];
     };
 }
 
-#endif // NODE_CRYPTO_SHA1_H_
+#endif // NODE_CRYPTO_HMAC_H_
