@@ -17,22 +17,6 @@
  *
  *****************************************************************************/
 
-#include "node/net/acceptor.h"
-#include <cassert>
-#include "node/net/stream_socket_factory.h"
 
-namespace node {
-    namespace net {
 
-        acceptor::acceptor(event_loop& main_loop, 
-            stream_socket_factory& ss_factory, workers& workers)
-            : main_loop_(main_loop)
-            , ss_factory_(ss_factory_)
-            , net_workers_(workers)
-            , ev_listener_(NULL)
-        {
 
-        }
-
-    }
-}

@@ -17,22 +17,15 @@
  *
  *****************************************************************************/
 
-#include "node/net/acceptor.h"
-#include <cassert>
-#include "node/net/stream_socket_factory.h"
+#ifndef NODE_NET_STREAM_SOCKET_H_
+#define NODE_NET_STREAM_SOCKET_H_
 
-namespace node {
-    namespace net {
+#if defined(_MSC_VER) && (_MSC_VER >= 1200)
+# pragma once
+#endif
 
-        acceptor::acceptor(event_loop& main_loop, 
-            stream_socket_factory& ss_factory, workers& workers)
-            : main_loop_(main_loop)
-            , ss_factory_(ss_factory_)
-            , net_workers_(workers)
-            , ev_listener_(NULL)
-        {
 
-        }
 
-    }
-}
+
+
+#endif // NODE_NET_STREAM_SOCKET_H_

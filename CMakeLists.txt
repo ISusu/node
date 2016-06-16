@@ -93,11 +93,16 @@ if(Libevent_FOUND)
     node/net/acceptor.h
     node/net/event_.h
     node/net/buffer_event.h
+    node/net/stream_socket.h
+    node/net/stream_socket_factory.h
+    node/net/worker.h
     
     src/net/event_loop.cpp
     src/net/acceptor.cpp
     src/net/event_.cpp
     src/net/buffer_event.cpp
+    src/net/stream_socket.cpp
+    src/net/worker.cpp
   )
 endif(Libevent_FOUND)
 

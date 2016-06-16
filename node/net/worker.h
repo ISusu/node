@@ -17,22 +17,28 @@
  *
  *****************************************************************************/
 
-#include "node/net/acceptor.h"
-#include <cassert>
-#include "node/net/stream_socket_factory.h"
+#ifndef NODE_NET_WORKER_H_
+#define NODE_NET_WORKER_H_
+
+#if defined(_MSC_VER) && (_MSC_VER >= 1200)
+# pragma once
+#endif
+
+#include <vector>
+#include <node/noncopyable.h>
 
 namespace node {
     namespace net {
 
-        acceptor::acceptor(event_loop& main_loop, 
-            stream_socket_factory& ss_factory, workers& workers)
-            : main_loop_(main_loop)
-            , ss_factory_(ss_factory_)
-            , net_workers_(workers)
-            , ev_listener_(NULL)
+        class worker : private noncopyable
         {
+        public:
+            worker(void);
+            ~worker(void);
+        };
 
-        }
-
+        typedef std::vector<worker> workers;
     }
 }
+
+#endif // NODE_NET_WORKER_H_

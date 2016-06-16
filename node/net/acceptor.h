@@ -24,22 +24,32 @@
 # pragma once
 #endif
 
-#include <node/noncopyable.h>
+#include <string>
 #include <event2/listener.h>
+#include <node/noncopyable.h>
+#include <node/net/worker.h>
 
 namespace node {
     namespace net {
 
         class event_loop;
+        class stream_socket_factory;
 
         class acceptor : private noncopyable
         {
         public:
-            acceptor(event_loop&);
+            acceptor(event_loop&, stream_socket_factory&, workers&);
             ~acceptor(void);
+
+            bool open(const std::string&, int, int);
+            void suspend(void);
+            void resume(void);
 
         private:
             event_loop& main_loop_;
+            stream_socket_factory& ss_factory_;
+            workers& net_workers_;
+            struct ::evconnlistener* ev_listener_;
         };
     }
 }
