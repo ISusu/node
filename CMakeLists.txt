@@ -33,17 +33,25 @@ elseif (UNIX)
 endif()
 
 set(node_OS_SRC
+  node/os/string.h
+  
+  src/os/string.cpp
+  src/os/string_${SRC_PLAT}.cpp
 )
 
 set(node_Base_SRC
-    node/noncopyable.h
-    node/platform.h
-    node/config.h
-    node/macros.h
-    node/auto_ptr.h
-    node/scoped_ptr.h
-    node/scoped_array.h
-    node/byte_converter.h
+  node/noncopyable.h
+  node/platform.h
+  node/config.h
+  node/macros.h
+  node/auto_ptr.h
+  node/scoped_ptr.h
+  node/scoped_array.h
+  node/byte_converter.h
+  node/byte_buffer.h
+  node/byte_buffer.inl
+  
+  src/byte_buffer.cpp
 )
 set(node_Thread_SRC
   node/thread/runnable.h
