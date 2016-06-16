@@ -17,17 +17,49 @@
  *
  *****************************************************************************/
 
-#ifndef NODE_MACROS_H_
-#define NODE_MACROS_H_
+#ifndef NODE_SCOPED_ARRAY_H_
+#define NODE_SCOPED_ARRAY_H_
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
 #endif
 
-#define SAFE_DEL(_X)    if (_X) { delete (_X); }
-#define SAFE_DEL_ARRAY(_X)  if (_X) { delete[] (_X); }
+#include <stddef.h>
+#include <node/macros.h>
 
-#define NODE_MAX(_A, _B)    ( (_A) > (_B) ? (_A) : (_B) )
-#define NODE_MIN(_A, _B)    ( (_A) < (_B) ? (_A) : (_B) )
+namespace node
+{
+    template<class T>
+    class scoped_array
+    {
+    public:
+        scoped_array(T* ptr = NULL) : ptr_(ptr) {}
+        ~scoped_array(void) { SAFE_DEL_ARRAY(ptr_); }
 
-#endif // NODE_MACROS_H_
+        operator bool(void) const
+        {
+            return ptr_ != NULL;
+        }
+
+        T& operator[](std::size_t index)
+        {
+            return ptr_[index];
+        }
+
+        T* get(void)
+        {
+            return ptr_;
+        }
+
+        void reset(T* ptr = NULL)
+        {
+            SAFE_DEL_ARRAY(ptr_);
+            ptr_ = ptr;
+        }
+
+    private:
+        T* ptr_;
+    };
+}
+
+#endif // NODE_SCOPED_ARRAY_H_

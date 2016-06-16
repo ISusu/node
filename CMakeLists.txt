@@ -41,6 +41,8 @@ set(node_Base_SRC
     node/config.h
     node/macros.h
     node/auto_ptr.h
+    node/scoped_ptr.h
+    node/scoped_array.h
 )
 set(node_Thread_SRC
   node/thread/runnable.h
@@ -63,16 +65,33 @@ set(node_Thread_SRC
   src/thread/tss.cpp
   src/thread/tss_${SRC_PLAT}.cpp
 )
+if(OPENSSL_FOUND)
+  set(node_Crypto_SRC
+    node/crypto/bignumber.h
+    node/crypto/sha1.h
+    
+    src/crypto/bignumber.cpp
+    src/crypto/sha1.cpp
+  )
+endif(OPENSSL_FOUND)
 
 if (WIN32)
   source_group("OS" FILES ${node_OS_SRC})
   source_group("Base" FILES ${node_Base_SRC})
   source_group("Thread" FILES ${node_Thread_SRC})
+  if(OPENSSL_FOUND)
+    source_group("Crypto" FILES ${node_Crypto_SRC})
+  endif(OPENSSL_FOUND)
 endif()
 
 #------------------------------------------------------------------------------
-add_library(node STATIC
+set(node_SRC
   ${node_OS_SRC}
   ${node_Base_SRC}
   ${node_Thread_SRC}
 )
+if(OPENSSL_FOUND)
+  set(node_SRC ${node_Crypto_SRC} ${node_SRC})
+endif(OPENSSL_FOUND)
+
+add_library(node STATIC ${node_SRC})

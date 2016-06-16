@@ -17,17 +17,15 @@
  *
  *****************************************************************************/
 
-#ifndef NODE_MACROS_H_
-#define NODE_MACROS_H_
+#ifndef NODE_CRYPTO_SHA1_H_
+#define NODE_CRYPTO_SHA1_H_
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
 #endif
 
-#define SAFE_DEL(_X)    if (_X) { delete (_X); }
-#define SAFE_DEL_ARRAY(_X)  if (_X) { delete[] (_X); }
 
-#define NODE_MAX(_A, _B)    ( (_A) > (_B) ? (_A) : (_B) )
-#define NODE_MIN(_A, _B)    ( (_A) < (_B) ? (_A) : (_B) )
 
-#endif // NODE_MACROS_H_
+
+
+#endif // NODE_CRYPTO_SHA1_H_
