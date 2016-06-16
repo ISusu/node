@@ -24,8 +24,24 @@
 # pragma once
 #endif
 
+#include <node/noncopyable.h>
+#include <event2/listener.h>
 
+namespace node {
+    namespace net {
 
+        class event_loop;
 
+        class acceptor : private noncopyable
+        {
+        public:
+            acceptor(event_loop&);
+            ~acceptor(void);
+
+        private:
+            event_loop& main_loop_;
+        };
+    }
+}
 
 #endif // NODE_NET_ACCEPTOR_H_
