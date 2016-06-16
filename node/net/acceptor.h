@@ -26,6 +26,7 @@
 
 #include <string>
 #include <event2/listener.h>
+#include <node/auto_ptr.h>
 #include <node/noncopyable.h>
 #include <node/net/worker.h>
 
@@ -38,7 +39,8 @@ namespace node {
         class acceptor : private noncopyable
         {
         public:
-            acceptor(event_loop&, stream_socket_factory&, workers&);
+            acceptor(event_loop*, stream_socket_factory*);
+            acceptor(workers*, stream_socket_factory*);
             ~acceptor(void);
 
             bool open(const std::string&, int, int);
@@ -46,9 +48,10 @@ namespace node {
             void resume(void);
 
         private:
-            event_loop& main_loop_;
-            stream_socket_factory& ss_factory_;
-            workers& net_workers_;
+            event_loop* main_loop_;
+            workers* net_workers_;
+            node::auto_ptr<stream_socket_factory> ss_factory_;
+            
             struct ::evconnlistener* ev_listener_;
         };
     }

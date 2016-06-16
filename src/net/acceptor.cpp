@@ -24,9 +24,19 @@
 namespace node {
     namespace net {
 
-        acceptor::acceptor(event_loop& main_loop, 
-            stream_socket_factory& ss_factory, workers& workers)
+        acceptor::acceptor(event_loop* main_loop, 
+            stream_socket_factory* ss_factory)
             : main_loop_(main_loop)
+            , ss_factory_(ss_factory_)
+            , net_workers_(NULL)
+            , ev_listener_(NULL)
+        {
+
+        }
+
+        acceptor::acceptor(workers* workers, 
+            stream_socket_factory* ss_factory)
+            : main_loop_(NULL)
             , ss_factory_(ss_factory_)
             , net_workers_(workers)
             , ev_listener_(NULL)

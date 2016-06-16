@@ -37,7 +37,12 @@ namespace node {
             ~worker(void);
         };
 
-        typedef std::vector<worker> workers;
+        class workers : private noncopyable
+        {
+        public:
+            workers(void);
+            ~workers(void);
+        };
     }
 }
 
