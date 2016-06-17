@@ -50,6 +50,7 @@ set(node_Base_SRC
   node/byte_converter.h
   node/byte_buffer.h
   node/byte_buffer.inl
+  node/atomic_value.h
   
   src/byte_buffer.cpp
 )
@@ -87,34 +88,12 @@ if(OPENSSL_FOUND)
   )
 endif(OPENSSL_FOUND)
 
-if(Libevent_FOUND)
-  set(node_Net_SRC
-    node/net/event_loop.h
-    node/net/acceptor.h
-    node/net/event_.h
-    node/net/buffer_event.h
-    node/net/stream_socket.h
-    node/net/stream_socket_factory.h
-    node/net/worker.h
-    
-    src/net/event_loop.cpp
-    src/net/acceptor.cpp
-    src/net/event_.cpp
-    src/net/buffer_event.cpp
-    src/net/stream_socket.cpp
-    src/net/worker.cpp
-  )
-endif(Libevent_FOUND)
-
 if (WIN32)
   source_group("OS" FILES ${node_OS_SRC})
   source_group("Base" FILES ${node_Base_SRC})
   source_group("Thread" FILES ${node_Thread_SRC})
   if(OPENSSL_FOUND)
     source_group("Crypto" FILES ${node_Crypto_SRC})
-  endif(OPENSSL_FOUND)
-  if(OPENSSL_FOUND)
-    source_group("Net" FILES ${node_Net_SRC})
   endif(OPENSSL_FOUND)
 endif()
 
@@ -127,8 +106,5 @@ set(node_SRC
 if(OPENSSL_FOUND)
   set(node_SRC ${node_Crypto_SRC} ${node_SRC})
 endif(OPENSSL_FOUND)
-if(Libevent_FOUND)
-  set(node_SRC ${node_Net_SRC} ${node_SRC})
-endif(Libevent_FOUND)
 
 add_library(node STATIC ${node_SRC})
